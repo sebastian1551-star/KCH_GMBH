@@ -1,273 +1,129 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENPROM Sicherheitsdatenblätter</title>
-<meta name="theme-color" content="#0078d4">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENPROM Sicherheitsdatenblätter</title>
+    <meta name="theme-color" content="#0078d4">
+    <style>
         :root {
             --primary: #0078d4;
             --danger: #d13438;
+            --warning: #ff8c00;
             --success: #107c10;
             --bg: #f3f2f1;
             --text: #323130;
-            --muted: #605e5c;
-            --line: #edebe9;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        .app-container { width: 100%; max-width: 550px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            padding: 10px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Arial, sans-serif;
-        }
+        .emergency-btn { background: var(--danger); color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 16px; border-radius: 8px; font-weight: bold; font-size: 18px; margin-bottom: 12px; border: 2px solid #a4262c; box-sizing: border-box; width: 100%; }
 
-        .update-info {
-            width: 100%;
-            max-width: 550px;
-            margin-bottom: 15px;
-            color: var(--muted);
-            font-size: 13px;
-        }
+        .search-box { width: 100%; box-sizing: border-box; padding: 15px; margin-bottom: 15px; border: 2px solid var(--primary); border-radius: 8px; font-size: 16px; outline: none; }
 
-        .update-value {
-            color: var(--text);
-            font-weight: 700;
-        }
+        .file-list { list-style: none; padding: 0; margin: 0; }
 
-        .acknowledgement-link {
-            width: 100%;
-            max-width: 550px;
-            min-height: 80px;
-            margin-bottom: 20px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            border: 1px solid #0d620d;
-            border-radius: 12px;
-            background: var(--success);
-            color: #fff;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: background 0.2s;
-        }
+        .file-row { display: flex; align-items: stretch; gap: 8px; border-bottom: 1px solid #f3f2f1; }
+        .file-row.hidden { display: none !important; }
 
-        .acknowledgement-link:hover,
-        .acknowledgement-link:focus {
-            background: #0b6a0b;
-        }
+        .file-item { flex: 1; min-width: 0; padding: 12px 4px 12px 0; display: flex; flex-direction: column; text-decoration: none; color: var(--text); transition: background 0.2s; }
+        .file-item:hover { background: #f9f9f9; }
 
-        .acknowledgement-icon {
-            font-size: 24px;
-            line-height: 1;
-        }
+        .pdf-tag { font-size: 9px; background: var(--danger); color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold; width: fit-content; margin-bottom: 3px; }
+        .product-name { font-weight: 600; font-size: 14px; }
 
-        .app-container {
-            width: 100%;
-            max-width: 550px;
-            padding: 15px;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
+        .hidden { display: none !important; }
+        .footer { text-align: center; font-size: 11px; color: #a19f9d; margin-top: 25px; padding: 10px; border-top: 1px solid #eee; }
 
-        .emergency-btn {
-            width: 100%;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 12px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #a4262c;
-            background: var(--danger);
-            font-size: 18px;
-            text-decoration: none;
-        }
-
-        .search-box {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 15px;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .category-item {
-            margin-bottom: 8px;
-        }
-
-        .category-header {
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            background: #faf9f8;
-            font-weight: 700;
-        }
-
-        .submenu {
-            display: block;
-            margin: 0 0 0 5px;
-            padding: 0;
-            border-left: 2px solid var(--primary);
-            list-style: none;
-        }
-
-        .file-row {
-            list-style: none;
-            border-bottom: 1px solid #f3f2f1;
-            transition: background 0.2s;
-        }
-
-        .file-row:hover,
-        .file-row:focus-within {
-            background: #f9f9f9;
-        }
-
-        .file-item {
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            color: var(--text);
-            text-decoration: none;
-            width: 100%;
-        }
-
-        .pdf-tag {
-            width: fit-content;
-            margin-bottom: 3px;
-            padding: 2px 4px;
-            border-radius: 3px;
-            background: var(--danger);
-            color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-        }
-
-        .product-name {
-            overflow-wrap: anywhere;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .footer {
-            margin-top: 25px;
-            padding: 10px;
-            border-top: 1px solid #eee;
-            color: #a19f9d;
-            text-align: center;
-            font-size: 11px;
-        }
-</style>
+        .update-info { margin-bottom: 15px; font-size: 13px; color: #605e5c; width: 100%; max-width: 550px; }
+        .update-value { font-weight: bold; color: var(--text); }
+    </style>
 </head>
 <body>
-<div class="update-info">
-<span>Letzte Aktualisierung der Datenbank:</span>
-<span class="update-value">18.08.2026</span>
-</div>
+
+    <div class="update-info">
+        <span>Letzte Aktualisierung der Datenbank:</span>
+        <span class="update-value">18.08.2026</span>
+    </div>
 
     <div id="offline-status" class="update-info" style="display:none;"></div>
 
-    <a class="acknowledgement-link cacheable-link" href="SDS_2026_GMBH/unterweisung.pdf" target="_blank" rel="noopener" aria-label="Kenntnisnahme der Sicherheitsdatenblätter">
-        <span class="acknowledgement-icon" aria-hidden="true">✓</span>
-        <span>KENNTNISNAHME DER SICHERHEITSDATENBLÄTTER</span>
-    </a>
+    <div class="app-container">
+        <!-- Zielony element zapoznania stylizowany identycznie jak w pierwszym projekcie -->
+        <ul class="file-list" style="margin-bottom: 15px;">
+            <li class="file-row" style="background-color: #eaf3ea; border-radius: 8px; border-bottom: none; border: 1px solid #107c10; margin-bottom: 10px;">
+                <a href="SDS_2026_GMBH/unterweisung.pdf" class="file-item cacheable-link" target="_blank" rel="noopener" style="padding: 12px 12px; display: flex; flex-direction: row; align-items: center; gap: 12px;">
+                    <span style="font-size: 24px;">✓</span>
+                    <div>
+                        <span class="pdf-tag" style="background: var(--success);">PDF</span>
+                        <span class="product-name" style="color: #0b530b; font-size: 15px;">KENNTNISNAHME DER SICHERHEITSDATENBLÄTTER</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
 
-    <main class="app-container">
-        <a href="tel:112" class="emergency-btn">NOTRUF: 112</a>
+        <a href="tel:112" class="emergency-btn">🆘 NOTRUF: 112</a>
 
         <input type="text" id="search" class="search-box" placeholder="Produkt oder Dateiname suchen...">
 
-        <div class="tree-container">
-            <section class="category-item">
-                <div class="category-header">
-                    <span>SICHERHEITSDATENBLÄTTER GMBH (35)</span>
-                </div>
-                <ul class="submenu">
-                    <li class="file-row"><a href="SDS_2026_GMBH/01-adblue-aral-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">1. AdBlue (Aral)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/02-arecal-marker-usd-basic-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">2. Arecal Marker USD Basic</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/03-benzin-aral-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">3. Benzin (Aral)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/04-bremsenreiniger-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">4. Bremsenreiniger (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/05-cut-cool-bohr-und-schneideoel-400ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">5. Cut-Cool Bohr- und Schneidöl 400ml (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/06-dc-next-klarlack-400ml-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">6. DC Next Klarlack 400ml</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/07-dieselkraftstoff-aral-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">7. Dieselkraftstoff (Aral)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/08-dupli-color-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">8. Dupli-Color</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/09-fsg-industrie-reiniger-typ-a-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">9. FSG Industrie-Reiniger Typ A</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/10-fuchs-titan-syn-mc-10w-40-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">10. Fuchs Titan Synth MC 10W-40</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/11-granit-saegekettenhaftoel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">11. Granit Sägekettenhaftöl</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/12-haendedesinfektion-gel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">12. Händedesinfektion Gel</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/14-hhs-2000-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">13. HHS 2000 (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/15-kuehlfluessigkeit-hkf-15-1-mw-65-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">14. Kühlflüssigkeit HKF 15.1</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/16-langzeitfeet-iii-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">15. Langzeitfett III (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/17-methanol-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">16. Methanol</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/18-mosquitos-tenzi-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">17. Mosquitos (Tenzi)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/19-nigrin-mos2-graphit-schmiermittel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">18. Nigrin MoS2 Graphit-Schmiermittel</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/20-noxy-police-adblue-grupa-azoty-pl.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">19. NOXy Police AdBlue (Grupa Azoty)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/21-oelbinder-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">20. Ölbinder</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/22-oregon-kettenhaftoel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">21. Oregon Kettenhaftöl</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/23-presto-spruehfett-weis-400ml-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">22. Presto Sprühfett weiß 400ml</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/24-robbyrob-scheibenfrostschutz-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">23. Robbyrob Scheibenfrostschutz</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/25-saegekettenhaftoel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">24. Sägekettenhaftöl</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/26-spray-trig-a-cap-orginal-fluo-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">25. Spray Trig-a-cap Original Fluo</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/27-strassenmarkierer-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">26. Straßenmarkierer (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/28-super-enteiser-spray-500ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">27. Super-Enteiser-Spray 500ml (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/29-technischesdatenblatt-gehotex-w20b-dkx-hydro-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">28. Gehotex W20B DKX Hydro</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/30-trockengleitspray-ptfe-300ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">29. Trockengleitspray PTFE 300ml (Würth)</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/31-uhu-alleskleber-kraft-125g-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">30. UHU Alleskleber Kraft 125g</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/32-uhu-spezialsekundenkleber-porzellan-keramik-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">31. UHU Spezialsekundenkleber Porzellan/Keramik</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/33-universalprimer-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">32. Universalprimer</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/34-zement-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">33. Zement</span></a></li>
-                    <li class="file-row"><a href="SDS_2026_GMBH/35-zinkspray-400ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">34. Zinkspray 400ml (Würth)</span></a></li>
-                </ul>
-            </section>
+        <div class="category-item">
+            <div style="font-weight: 700; margin-bottom: 10px; font-size: 13px; color: #605e5c;">
+                SICHERHEITSDATENBLÄTTER GMBH (35)
+            </div>
+            <ul class="file-list">
+                <li class="file-row"><a href="SDS_2026_GMBH/01-adblue-aral-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">1. AdBlue (Aral)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/02-arecal-marker-usd-basic-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">2. Arecal Marker USD Basic</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/03-benzin-aral-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">3. Benzin (Aral)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/04-bremsenreiniger-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">4. Bremsenreiniger (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/05-cut-cool-bohr-und-schneideoel-400ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">5. Cut-Cool Bohr- und Schneidöl 400ml (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/06-dc-next-klarlack-400ml-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">6. DC Next Klarlack 400ml</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/07-dieselkraftstoff-aral-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">7. Dieselkraftstoff (Aral)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/08-dupli-color-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">8. Dupli-Color</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/09-fsg-industrie-reiniger-typ-a-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">9. FSG Industrie-Reiniger Typ A</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/10-fuchs-titan-syn-mc-10w-40-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">10. Fuchs Titan Synth MC 10W-40</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/11-granit-saegekettenhaftoel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">11. Granit Sägekettenhaftöl</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/12-haendedesinfektion-gel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">12. Händedesinfektion Gel</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/14-hhs-2000-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">13. HHS 2000 (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/15-kuehlfluessigkeit-hkf-15-1-mw-65-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">14. Kühlflüssigkeit HKF 15.1</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/16-langzeitfeet-iii-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">15. Langzeitfett III (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/17-methanol-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">16. Methanol</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/18-mosquitos-tenzi-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">17. Mosquitos (Tenzi)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/19-nigrin-mos2-graphit-schmiermittel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">18. Nigrin MoS2 Graphit-Schmiermittel</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/20-noxy-police-adblue-grupa-azoty-pl.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">19. NOXy Police AdBlue (Grupa Azoty)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/21-oelbinder-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">20. Ölbinder</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/22-oregon-kettenhaftoel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">21. Oregon Kettenhaftöl</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/23-presto-spruehfett-weis-400ml-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">22. Presto Sprühfett weiß 400ml</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/24-robbyrob-scheibenfrostschutz-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">23. Robbyrob Scheibenfrostschutz</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/25-saegekettenhaftoel-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">24. Sägekettenhaftöl</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/26-spray-trig-a-cap-orginal-fluo-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">25. Spray Trig-a-cap Original Fluo</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/27-strassenmarkierer-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">26. Straßenmarkierer (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/28-super-enteiser-spray-500ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">27. Super-Enteiser-Spray 500ml (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/29-technischesdatenblatt-gehotex-w20b-dkx-hydro-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">28. Gehotex W20B DKX Hydro</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/30-trockengleitspray-ptfe-300ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">29. Trockengleitspray PTFE 300ml (Würth)</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/31-uhu-alleskleber-kraft-125g-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">30. UHU Alleskleber Kraft 125g</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/32-uhu-spezialsekundenkleber-porzellan-keramik-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">31. UHU Spezialsekundenkleber Porzellan/Keramik</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/33-universalprimer-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">32. Universalprimer</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/34-zement-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">33. Zement</span></a></li>
+                <li class="file-row"><a href="SDS_2026_GMBH/35-zinkspray-400ml-wuerth-de.pdf" class="file-item cache-pdf cacheable-link" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">34. Zinkspray 400ml (Würth)</span></a></li>
+            </ul>
         </div>
 
         <div class="footer">ENPROM HSEQ</div>
-    </main>
+    </div>
 
     <script>
         document.getElementById("search").addEventListener("input", function (event) {
-            const filter = event.target.value.toLowerCase();
-            const categories = document.querySelectorAll(".category-item");
+            let filter = event.target.value.toLowerCase();
+            let rows = document.querySelectorAll(".file-row");
 
-            categories.forEach((category) => {
-                const items = category.querySelectorAll(".file-row");
-                let hasMatch = false;
-
-                items.forEach((item) => {
-                    const text = item.textContent.toLowerCase();
-                    const isMatch = text.includes(filter);
-                    item.classList.toggle("hidden", !isMatch);
-                    hasMatch = hasMatch || isMatch;
-                });
-
-                category.classList.toggle("hidden", filter.length > 0 && !hasMatch);
+            rows.forEach((row) => {
+                let text = row.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    row.classList.remove("hidden");
+                } else {
+                    row.classList.add("hidden");
+                }
             });
         });
 
@@ -297,18 +153,14 @@
                             await cache.put(url, resp.clone());
                             newlySaved++;
                         }
-                    } catch (err) {
-                        // pomijamy pojedyncze błędy sieciowe w tle
-                    }
+                    } catch (err) {}
                 }
                 if (newlySaved > 0) {
                     showStatus("Karten wurden für den Offline-Zugriff gespeichert (" + newlySaved + " neu).");
                 } else {
                     showStatus("Alle Karten sind bereits offline verfügbar.");
                 }
-            } catch (err) {
-                // Tryb prywatny lub brak wsparcia
-            }
+            } catch (err) {}
         }
 
         async function openCacheableLink(event) {
@@ -329,7 +181,6 @@
                 }
                 if (resp && resp.ok) {
                     const blob = await resp.blob();
-                    // Jawne nadanie typu application/pdf zapobiega otwieraniu jako zwykły plik tekstowy / raw
                     const pdfBlob = new Blob([blob], { type: "application/pdf" });
                     const blobUrl = URL.createObjectURL(pdfBlob);
                     window.open(blobUrl, "_blank");
