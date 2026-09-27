@@ -196,7 +196,6 @@
 
     <div id="offline-status" class="update-info" style="display:none;"></div>
 
-    <!-- Przycisk zapoznania (podpięty pod klasę cacheableLink) -->
     <a class="acknowledgement-link cacheable-link" href="https://raw.githubusercontent.com/sebastian1551-star/SDS_GMBH/main/SDS_2026_GMBH/unterweisung-mitarbeiter-sicherheitsdatenblaetter.pdf" target="_blank" rel="noopener" aria-label="Kenntnisnahme der Sicherheitsdatenblätter">
         <span class="acknowledgement-icon" aria-hidden="true">✓</span>
         <span>KENNTNISNAHME DER SICHERHEITSDATENBLÄTTER</span>
@@ -275,7 +274,7 @@
         });
 
         // ===== Wbudowany cache offline =====
-        const CACHE_NAME = "sds-gmbh-inline-v2"; 
+        const CACHE_NAME = "sds-gmbh-inline-v3"; 
         const statusBox = document.getElementById("offline-status");
 
         function showStatus(text) {
@@ -330,9 +329,15 @@
                         await cache.put(url, resp.clone());
                     }
                 }
-                const blob = await resp.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                window.open(blobUrl, "_blank");
+                if (resp && resp.ok) {
+                    const blob = await resp.blob();
+                    // Jawne nadanie typu application/pdf zapobiega otwieraniu jako zwykły plik tekstowy / raw
+                    const pdfBlob = new Blob([blob], { type: "application/pdf" });
+                    const blobUrl = URL.createObjectURL(pdfBlob);
+                    window.open(blobUrl, "_blank");
+                } else {
+                    window.open(url, "_blank");
+                }
             } catch (err) {
                 if (!navigator.onLine) {
                     showStatus("Diese Karte ist noch nicht offline gespeichert – bitte einmal mit Internet öffnen.");
