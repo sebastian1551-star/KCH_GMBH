@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENPROM Sicherheitsdatenblätter</title>
+    <title>Gemeinsames Sicherheitsdatenblatt-Register</title>
     <meta name="theme-color" content="#0078d4">
     <style>
         :root {
@@ -16,46 +16,55 @@
         }
 
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        .app-container { width: 100%; max-width: 550px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); box-sizing: border-box; }
+        .app-container { width: 100%; max-width: 550px; background: white; padding: 12px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); box-sizing: border-box; }
 
-        .emergency-btn { background: var(--danger); color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 16px; border-radius: 8px; font-weight: bold; font-size: 18px; margin-bottom: 12px; border: 2px solid #a4262c; box-sizing: border-box; width: 100%; }
+        .emergency-btn { background: var(--danger); color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 16px; margin-bottom: 10px; border: 2px solid #a4262c; box-sizing: border-box; }
 
-        .search-box { width: 100%; box-sizing: border-box; padding: 15px; margin-bottom: 15px; border: 2px solid var(--primary); border-radius: 8px; font-size: 16px; outline: none; }
+        .search-box { width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 10px; border: 2px solid var(--primary); border-radius: 8px; font-size: 15px; outline: none; }
 
         .file-list { list-style: none; padding: 0; margin: 0; }
 
-        .file-row { display: flex; align-items: stretch; gap: 8px; border-bottom: 1px solid #f3f2f1; }
+        .file-row { display: flex; align-items: stretch; border-bottom: 1px solid #f3f2f1; }
         .file-row.hidden { display: none !important; }
 
-        .file-item { flex: 1; min-width: 0; padding: 12px 4px 12px 0; display: flex; flex-direction: column; text-decoration: none; color: var(--text); transition: background 0.2s; }
+        .file-item { flex: 1; min-width: 0; padding: 6px 0; display: flex; flex-direction: column; text-decoration: none; color: var(--text); transition: background 0.2s; }
         .file-item:hover { background: #f9f9f9; }
 
-        .pdf-tag { font-size: 9px; background: var(--danger); color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold; width: fit-content; margin-bottom: 3px; }
-        .product-name { font-weight: 600; font-size: 14px; }
-        .ufi-box { font-size: 11px; color: var(--warning); margin-top: 4px; font-weight: 700; font-family: monospace; word-break: break-all; }
+        .row-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+        .pdf-tag { font-size: 9px; background: var(--danger); color: white; padding: 1px 3px; border-radius: 3px; font-weight: bold; width: fit-content; margin-bottom: 2px; }
+        .product-name { font-weight: 600; font-size: 13px; }
+        .manufacturer { font-size: 10px; color: #605e5c; font-style: italic; line-height: 1.1; }
+        .card-date { font-size: 10px; color: #8a8886; white-space: nowrap; }
+
+        .ufi-box { font-size: 10px; color: var(--warning); margin-top: 2px; font-weight: 700; font-family: monospace; word-break: break-all; line-height: 1.1; }
+
+        .src-link { flex: 0 0 auto; align-self: center; width: 12px; height: 12px; margin-left: 8px; border: 1.5px solid #a19f9d; border-radius: 3px; box-sizing: border-box; opacity: .7; transition: all .15s; position: relative; }
+        .src-link::after { content: ""; position: absolute; inset: 2px; background: #a19f9d; border-radius: 1px; transition: background .15s; }
+        .src-link:hover, .src-link:focus-visible { opacity: 1; border-color: var(--primary); }
+        .src-link:hover::after, .src-link:focus-visible::after { background: var(--primary); }
 
         .hidden { display: none !important; }
-        .footer { text-align: center; font-size: 11px; color: #a19f9d; margin-top: 25px; padding: 10px; border-top: 1px solid #eee; }
+        .footer { text-align: center; font-size: 11px; color: #a19f9d; margin-top: 15px; padding: 8px; border-top: 1px solid #eee; }
 
-        .update-info { margin-bottom: 15px; font-size: 13px; color: #605e5c; width: 100%; max-width: 550px; }
+        .update-info { margin-bottom: 10px; font-size: 12px; color: #605e5c; width: 100%; max-width: 550px; }
         .update-value { font-weight: bold; color: var(--text); }
     </style>
 </head>
 <body>
 
     <div class="update-info">
-        <span>Letzte Aktualisierung der Datenbank:</span>
+        <span class="update-label">Letzte Aktualisierung der Datenbank:</span>
         <span class="update-value">31.08.2026</span>
     </div>
 
     <div class="app-container">
-        <ul class="file-list" style="margin-bottom: 15px;">
-            <li class="file-row" style="background-color: #eaf3ea; border-radius: 8px; border-bottom: none; border: 1px solid #107c10; margin-bottom: 10px;">
-                <a href="SDS_2026_GMBH/unterweisung.pdf" class="file-item cache-pdf" target="_blank" rel="noopener" style="padding: 12px 12px; display: flex; flex-direction: row; align-items: center; gap: 12px;">
-                    <span style="font-size: 24px;">🌿</span>
+        <!-- Grünes Element: Kenntnisnahme -->
+        <ul class="file-list" style="margin-bottom: 10px;">
+            <li class="file-row" style="background-color: #eaf3ea; border-radius: 8px; border-bottom: none; border: 1px solid #107c10; margin-bottom: 5px;">
+                <a href="SDS_2026_GMBH/unterweisung.pdf" class="file-item cache-pdf" target="_blank" rel="noopener" style="padding: 10px 12px; display: flex; flex-direction: row; align-items: center; gap: 12px;">
                     <div>
                         <span class="pdf-tag" style="background: var(--success);">PDF</span>
-                        <span class="product-name" style="color: #0b530b; font-size: 15px;">KENNTNISNAHME DER SICHERHEITSDATENBLÄTTER</span>
+                        <span class="product-name" style="color: #0b530b; font-size: 14px;">KENNTNISNAHME DER SICHERHEITSDATENBLÄTTER</span>
                     </div>
                 </a>
             </li>
@@ -63,91 +72,87 @@
 
         <a href="tel:112" class="emergency-btn">🆘 NOTRUF: 112</a>
 
-        <input type="text" id="search" class="search-box" placeholder="Produkt oder UFI suchen...">
+        <input type="text" id="search" class="search-box" placeholder="Produkt, Hersteller, Lieferant oder UFI suchen...">
 
-        <div class="category-item">
-            <div style="font-weight: 700; margin-bottom: 10px; font-size: 13px; color: #605e5c;">
-                SICHERHEITSDATENBLÄTTER GMBH (34)
-            </div>
-            <ul class="file-list">
-                <li class="file-row"><a href="SDS_2026_GMBH/01-adblue-aral-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">1. AdBlue (Aral)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/02-arecal-marker-usd-basic-de.PDF" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">2. Arecal Marker USD Basic</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/03-benzin-aral-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">3. Benzin (Aral)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/04-bremsenreiniger-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">4. Bremsenreiniger (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/05-cut-cool-bohr-und-schneideoel-400ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">5. Cut-Cool Bohr- und Schneidöl 400ml (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/06-dc-next-klarlack-400ml-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">6. DC Next Klarlack 400ml</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/07-dieselkraftstoff-aral-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">7. Dieselkraftstoff (Aral)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/08-dupli-color-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">8. Dupli-Color</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/09-fsg-industrie-reiniger-typ-a-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">9. FSG Industrie-Reiniger Typ A</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/10-fuchs-titan-syn-mc-10w-40-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">10. Fuchs Titan Synth MC 10W-40</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/11-granit-saegekettenhaftoel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">11. Granit Sägekettenhaftöl</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/12-haendedesinfektion-gel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">12. Händedesinfektion Gel</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/14-hhs-2000-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">13. HHS 2000 (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/15-kuehlfluessigkeit-hkf-15-1-mw-65-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">14. Kühlflüssigkeit HKF 15.1</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/16-langzeitfeet-iii-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">15. Langzeitfett III (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/17-methanol-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">16. Methanol</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/18-mosquitos-tenzi-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">17. Mosquitos (Tenzi)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/19-nigrin-mos2-graphit-schmiermittel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">18. Nigrin MoS2 Graphit-Schmiermittel</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/20-noxy-police-adblue-grupa-azoty-pl.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">19. NOXy Police AdBlue (Grupa Azoty)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/21-oelbinder-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">20. Ölbinder</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/22-oregon-kettenhaftoel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">21. Oregon Kettenhaftöl</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/23-presto-spruehfett-weis-400ml-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">22. Presto Sprühfett weiß 400ml</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/24-robbyrob-scheibenfrostschutz-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">23. Robbyrob Scheibenfrostschutz</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/25-saegekettenhaftoel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">24. Sägekettenhaftöl</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/26-spray-trig-a-cap-orginal-fluo-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">25. Spray Trig-a-cap Original Fluo</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/27-strassenmarkierer-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">26. Straßenmarkierer (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/28-super-enteiser-spray-500ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">27. Super-Enteiser-Spray 500ml (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/29-technischesdatenblatt-gehotex-w20b-dkx-hydro-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">28. Gehotex W20B DKX Hydro</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/30-trockengleitspray-ptfe-300ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">29. Trockengleitspray PTFE 300ml (Würth)</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/31-uhu-alleskleber-kraft-125g-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">30. UHU Alleskleber Kraft 125g</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/32-uhu-spezialsekundenkleber-porzellan-keramik-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">31. UHU Spezialsekundenkleber Porzellan/Keramik</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/33-universalprimer-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">32. Universalprimer</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/34-zement-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">33. Zement</span></a></li>
-                <li class="file-row"><a href="SDS_2026_GMBH/35-zinkspray-400ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><span class="pdf-tag">PDF</span><span class="product-name">34. Zinkspray 400ml (Würth)</span></a></li>
-            </ul>
-        </div>
-
+        <ul class="file-list">
+            <li class="file-row"><a href="SDS_2026_GMBH/01-adblue-aral-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">1. AdBlue (Aral)</span><div class="manufacturer">Herst./Lief.: Aral AG</div></div><span class="card-date">Akt.: 25.04.2023</span></div><div class="ufi-box">UFI: 3C91-2075-S001-RH5Q</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/02-arecal-marker-usd-basic-de.PDF" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">2. Arecal Marker USD Basic</span><div class="manufacturer">Herst./Lief.: RECA AG</div></div><span class="card-date">Akt.: 04.12.2025</span></div><div class="ufi-box">UFI: G030-V0WY-X00A-YF29</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/03-benzin-aral-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">3. Benzin (Aral)</span><div class="manufacturer">Herst./Lief.: Aral AG</div></div><span class="card-date">Akt.: 23.10.2024</span></div><div class="ufi-box">UFI: K3U4-W08X-P005-32N1</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/04-bremsenreiniger-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">4. Bremsenreiniger (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 08.04.2026</span></div><div class="ufi-box">UFI: NWNC-J02C-600X-0DN6</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/05-cut-cool-bohr-und-schneideoel-400ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">5. Cut-Cool Bohr- und Schneidöl 400ml (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 02.04.2026</span></div><div class="ufi-box">UFI: 2V94-70TY-Q00H-3PWU</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/06-dc-next-klarlack-400ml-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">6. DC Next Klarlack 400ml</span><div class="manufacturer">Herst./Lief.: European Aerosols GmbH</div></div><span class="card-date">Akt.: 17.03.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/07-dieselkraftstoff-aral-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">7. Dieselkraftstoff (Aral)</span><div class="manufacturer">Herst./Lief.: Aral AG</div></div><span class="card-date">Akt.: 20.03.2026</span></div><div class="ufi-box">UFI: 7X35-10CU-7004-87NP</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/08-dupli-color-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">8. Dupli-Color</span><div class="manufacturer">Herst./Lief.: European Aerosols GmbH</div></div><span class="card-date">Akt.: 19.03.2026</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/09-fsg-industrie-reiniger-typ-a-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">9. FSG Industrie-Reiniger Typ A</span><div class="manufacturer">Herst./Lief.: FSG Schäfer GmbH</div></div><span class="card-date">Akt.: 30.05.2023</span></div><div class="ufi-box">UFI: 9GUR-D2RA-H00M-YPW3</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/10-fuchs-titan-syn-mc-10w-40-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">10. Fuchs Titan Synth MC 10W-40</span><div class="manufacturer">Herst./Lief.: Fuchs Lubricants Germany GmbH</div></div><span class="card-date">Akt.: 29.11.2022</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/11-granit-saegekettenhaftoel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">11. Granit Sägekettenhaftöl</span><div class="manufacturer">Herst./Lief.: Wilhelm Fricke SE</div></div><span class="card-date">Akt.: 26.10.2021</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/12-haendedesinfektion-gel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">12. Händedesinfektion Gel</span><div class="manufacturer">Herst./Lief.: Dr. Becher GmbH</div></div><span class="card-date">Akt.: 15.12.2025</span></div><div class="ufi-box">UFI: Q2H1-NGKG-2MEN-57T0</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/13-hhs-500-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">13. HHS 500 (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 09.06.2026</span></div><div class="ufi-box">UFI: PPMC-F0DS-X000-RMG9</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/14-hhs-2000-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">14. HHS 2000 (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 21.03.2026</span></div><div class="ufi-box">UFI: A9RC-Q0DF-S00S-HXY0</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/15-kuehlfluessigkeit-hkf-15-1-mw-65-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">15. Kühlflüssigkeit HKF 15.1</span><div class="manufacturer">Herst./Lief.: Conzelmann Schweißhandelsgesellschaft mbH</div></div><span class="card-date">Akt.: 01.02.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/16-langzeitfeet-iii-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">16. Langzeitfett III (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 24.06.2026</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/17-methanol-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">17. Methanol</span><div class="manufacturer">Herst./Lief.: SFC Energy AG</div></div><span class="card-date">Akt.: 22.08.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/18-mosquitos-tenzi-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">18. Mosquitos (Tenzi)</span><div class="manufacturer">Herst./Lief.: TENZI Sp. z o.o.</div></div><span class="card-date">Akt.: 02.12.2019</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/19-nigrin-mos2-graphit-schmiermittel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">19. Nigrin MoS2 Graphit-Schmiermittel</span><div class="manufacturer">Herst./Lief.: MTS MarkenTechnikService GmbH &amp; Co KG</div></div><span class="card-date">Akt.: 12.11.2025</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/20-noxy-police-adblue-grupa-azoty-pl.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">20. NOXy Police AdBlue (Grupa Azoty)</span><div class="manufacturer">Herst./Lief.: Grupa Azoty Zakłady Chemiczne „Police” S.A.</div></div><span class="card-date">Akt.: 21.12.2022</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/21-oelbinder-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">21. Ölbinder</span><div class="manufacturer">Herst./Lief.: Albert Berner Deutschland GmbH</div></div><span class="card-date">Akt.: 07.03.2024</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/22-oregon-kettenhaftoel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">22. Oregon Kettenhaftöl</span><div class="manufacturer">Herst./Lief.: Oregon Tool GmbH</div></div><span class="card-date">Akt.: 22.09.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/23-presto-spruehfett-weis-400ml-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">23. Presto Sprühfett weiß 400ml</span><div class="manufacturer">Herst./Lief.: European Aerosols B.V.</div></div><span class="card-date">Akt.: 30.03.2022</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/24-robbyrob-scheibenfrostschutz-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">24. Robbyrob Scheibenfrostschutz</span><div class="manufacturer">Herst./Lief.: Walter Schmidt Chemie GmbH</div></div><span class="card-date">Akt.: 06.02.2025</span></div><div class="ufi-box">UFI: 9U70-70KD-A005-16DK</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/25-saegekettenhaftoel-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">25. Sägekettenhaftöl</span><div class="manufacturer">Herst./Lief.: Friedrich Scharr KG</div></div><span class="card-date">Akt.: 03.05.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/26-spray-trig-a-cap-orginal-fluo-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">26. Spray Trig-a-cap Original Fluo</span><div class="manufacturer">Herst./Lief.: A.M.P.E.R.E. System</div></div><span class="card-date">Akt.: 22.12.2020</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/27-strassenmarkierer-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">27. Straßenmarkierer (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 18.05.2026</span></div><div class="ufi-box">UFI: V83G-N086-Q003-KCN4</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/28-super-enteiser-spray-500ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">28. Super-Enteiser-Spray 500ml (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 03.03.2026</span></div><div class="ufi-box">UFI: U4VG-C04J-U00P-G8N2</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/29-technischesdatenblatt-gehotex-w20b-dkx-hydro-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">29. Gehotex W20B DKX Hydro</span><div class="manufacturer">Herst./Lief.: Lack- und Kunststoff-Chemie GmbH</div></div><span class="card-date">Akt.: 06.2024</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/30-trockengleitspray-ptfe-300ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">30. Trockengleitspray PTFE 300ml (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 19.05.2026</span></div><div class="ufi-box">UFI: U3PK-20AQ-4000-K2XE</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/31-uhu-alleskleber-kraft-125g-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">31. UHU Alleskleber Kraft 125g</span><div class="manufacturer">Herst./Lief.: UHU GmbH &amp; Co. KG</div></div><span class="card-date">Akt.: 06.05.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/32-uhu-spezialsekundenkleber-porzellan-keramik-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">32. UHU Spezialsekundenkleber Porzellan/Keramik</span><div class="manufacturer">Herst./Lief.: UHU GmbH &amp; Co. KG</div></div><span class="card-date">Akt.: 15.02.2023</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/33-universalprimer-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">33. Universalprimer</span><div class="manufacturer">Herst./Lief.: Teknos Group Oy</div></div><span class="card-date">Akt.: 12.02.2025</span></div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/34-zement-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">34. Zement</span><div class="manufacturer">Herst./Lief.: Vereinigung der Österreichischen Zementindustrie</div></div><span class="card-date">Akt.: 29.06.2022</span></div><div class="ufi-box">UFI: 5S10-Y05U-900A-XNYN</div></a></li>
+            <li class="file-row"><a href="SDS_2026_GMBH/35-zinkspray-400ml-wuerth-de.pdf" class="file-item cache-pdf" target="_blank" rel="noopener"><div class="row-top"><div><span class="pdf-tag">PDF</span><span class="product-name">35. Zinkspray 400ml (Würth)</span><div class="manufacturer">Herst./Lief.: Würth AG</div></div><span class="card-date">Akt.: 09.06.2026</span></div><div class="ufi-box">UFI: V0E9-J076-W003-JH9P</div></a></li>
+        </ul>
         <div class="footer">ENPROM HSEQ</div>
     </div>
 
-    <script>
-        // WYSZUKIWARKA
-        document.getElementById("search").addEventListener("input", function (event) {
-            let filter = event.target.value.toLowerCase();
-            let rows = document.querySelectorAll(".file-row");
+<script>
+    // SUCHFUNKTION (berücksichtigt Name, Hersteller, Lieferant, Datum und UFI)
+    document.getElementById('search').addEventListener('input', function(e) {
+        let filter = e.target.value.toLowerCase();
+        let rows = document.querySelectorAll('.file-row');
 
-            rows.forEach((row) => {
-                let text = row.textContent.toLowerCase();
-                if (text.includes(filter)) {
-                    row.classList.remove("hidden");
-                } else {
-                    row.classList.add("hidden");
-                }
-            });
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+            if (text.includes(filter)) {
+                row.classList.remove('hidden');
+            } else {
+                row.classList.add('hidden');
+            }
         });
+    });
 
-        // BEZPIECZNE CACHOWANIE PLIKÓW PDF W TLE (BEZ BLOKOWANIA KLIKNIĘCIA)
-        if ('caches' in window) {
-            const CACHE_NAME = 'enprom-sds-gmbh-cache-v1';
-            
-            document.querySelectorAll('.cache-pdf').forEach(link => {
-                link.addEventListener('click', function(event) {
-                    let pdfUrl = this.getAttribute('href');
-                    
-                    caches.open(CACHE_NAME).then(cache => {
-                        cache.match(pdfUrl).then(response => {
-                            if (!response) {
-                                cache.add(pdfUrl).catch(err => {
-                                    console.log('Cachowanie w tle pominięte:', err);
-                                });
-                            }
-                        });
-                    }).catch(err => {
-                        console.log('Cache API niedostępne:', err);
+    // SICHERES CACHEN DER PDF-DATEIEN IM HINTERGRUND
+    if ('caches' in window) {
+        const CACHE_NAME = 'enprom-sds-gmbh-cache-v1';
+
+        document.querySelectorAll('.cache-pdf').forEach(link => {
+            link.addEventListener('click', function(event) {
+                let pdfUrl = this.getAttribute('href');
+
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.match(pdfUrl).then(response => {
+                        if (!response) {
+                            cache.add(pdfUrl).catch(err => {
+                                console.log('Caching im Hintergrund übersprungen:', err);
+                            });
+                        }
                     });
+                }).catch(err => {
+                    console.log('Cache API nicht verfügbar:', err);
                 });
             });
-        }
-    </script>
+        });
+    }
+</script>
+
 </body>
 </html>
